@@ -1,0 +1,11 @@
+---
+- name: Apply configuration to all hosts
+  hosts: all
+  gather_facts: yes
+  roles:
+    - role: common
+      tags: common
+    - role: reverse-proxy
+      tags: reverse-proxy
+    - role: nitter
+      tags: nitter

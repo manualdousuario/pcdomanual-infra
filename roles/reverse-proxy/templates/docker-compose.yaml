@@ -1,0 +1,21 @@
+services:
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:2.8.3
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - CADDY_INGRESS_NETWORKS={{ docker_external_network_name }}
+    networks:
+      - {{ docker_external_network_name }}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+    restart: unless-stopped
+
+networks:
+  {{ docker_external_network_name }}:
+    external: true
+
+volumes:
+  caddy_data:

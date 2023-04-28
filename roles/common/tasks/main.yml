@@ -1,0 +1,44 @@
+---
+- name: Install common dependencies
+  become: yes
+  ansible.builtin.apt:
+    pkg:
+    - git
+    - docker.io
+    - python3-pip
+    - python3-venv
+    state: present
+    update_cache: yes
+
+- name: Install Python Docker dependencies
+  pip:
+    name:
+      - docker
+      - docker-compose
+
+- name: Add {{ ansible_user }} user to docker group
+  become: yes
+  user:
+    name: "{{ ansible_user }}"
+    append: yes
+    groups:
+      - docker
+    state: present
+
+- name: Reset ssh connection to refresh the user groups
+  meta: reset_connection
+
+- name: Create external docker network
+  community.docker.docker_network:
+    name: "{{ docker_external_network_name }}"
+    state: present
+
+- name: Install Docker Compose
+  become: yes
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-linux-x86_64
+    checksum: sha256:6abb771a438b8ef82b0ff0ef0e2e404032699104c3c40c59cd174b56214876c3
+    dest: /usr/local/bin/docker-compose
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: u+x,g+x

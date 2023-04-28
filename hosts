@@ -1,0 +1,10 @@
+[all:vars]
+ansible_user="pcdomanual"
+apps_path="/home/{{ ansible_user }}/apps"
+docker_external_network_name="external"
+
+[vagrant]
+192.168.56.10 domain="pcdomanual.local"
+
+[production]
+216.238.98.141 domain="pcdomanual.com"

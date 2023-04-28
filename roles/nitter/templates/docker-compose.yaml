@@ -1,0 +1,31 @@
+services:
+  nitter:
+    image: zedeus/nitter:2254a0728c587ebcec51ff08da0bf145606a629e
+    volumes:
+      - ./nitter.conf:/src/nitter.conf:ro
+    depends_on:
+      - redis
+    networks:
+      - {{ docker_external_network_name }}
+      - default
+    restart: unless-stopped
+    labels:
+      caddy: "nitter.{{ domain }}"
+      caddy.reverse_proxy.header_up_0: "-User-Agent"
+      caddy.reverse_proxy: {% raw %} "{{upstreams 8080}}" {% endraw %}
+
+  redis:
+    image: redis:6-alpine
+    # save a snapshot of the DB every 60 seconds if at least 1 write operation was performed
+    # reduces loglevel since the --save generates a lot of logs
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis:/data
+    restart: unless-stopped
+
+volumes:
+  redis:
+
+networks:
+  {{ docker_external_network_name }}:
+    external: true
