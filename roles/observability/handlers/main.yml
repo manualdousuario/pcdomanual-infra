@@ -1,0 +1,14 @@
+---
+- name: Restart prometheus
+  community.docker.docker_compose:  
+    project_src: "{{ app_path }}"
+    services: prometheus
+    state: present
+    restarted: yes
+
+- name: Restart grafana
+  community.docker.docker_compose:  
+    project_src: "{{ app_path }}"
+    services: grafana
+    state: present
+    restarted: yes

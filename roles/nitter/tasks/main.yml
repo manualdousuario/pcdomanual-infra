@@ -2,19 +2,19 @@
 - name: Create app folder
   file:
     state: directory
-    path: "{{ apps_path }}/nitter"
+    path: "{{ app_path }}"
 
 - name: Copy docker-compose file
   template:
     src: docker-compose.yaml
-    dest: "{{ apps_path }}/nitter/docker-compose.yaml"
+    dest: "{{ app_path }}/docker-compose.yaml"
 
 - name: Copy conf file
   template:
     src: nitter.conf
-    dest: "{{ apps_path }}/nitter/nitter.conf"
+    dest: "{{ app_path }}/nitter.conf"
 
 - name: Run docker-compose file
   community.docker.docker_compose:  
-    project_src: "{{ apps_path }}/nitter/"
+    project_src: "{{ app_path }}/"
     state: present

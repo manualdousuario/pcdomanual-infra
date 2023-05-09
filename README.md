@@ -35,6 +35,21 @@ Pode-se também usar `tags` para executar somente uma parte da configuração:
 $ ansible-playbook -i hosts --limit production site.yml --tags nitter
 ```
 
+## Ansible Vault
+O Ansible Vault é usado para guardar informações sensíveis (como senhas) dentro desse repositório de maneira segura. Toda informação secreta é armazenada no arquivo `group_vars/all/vault.yml` como variáveis.
+
+Primeiro, deve-se criar um arquivo chamado `.vault_pass` com a senha mestre.
+
+Depois crie o arquivo com o comando:
+```
+$ ansible-vault create group_vars/all/vault.yml
+```
+
+Para editar o arquivo (adicionar ou remover informações secretas) use o comando:
+```
+$ ansible-vault edit group_vars/all/vault.yml
+```
+
 ## Testando localmente
 Você pode usar o [Vagrant](Vagrantfile) para rodar uma versão do PC do Manual localmente.
 

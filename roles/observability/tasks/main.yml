@@ -1,0 +1,36 @@
+---
+- name: Create app folder
+  file:
+    state: directory
+    path: "{{ app_path }}"
+
+- name: Copy docker-compose file
+  template:
+    src: docker-compose.yaml
+    dest: "{{ app_path }}/docker-compose.yaml"
+
+- name: Copy prometheus conf file
+  template:
+    src: prometheus.yml
+    dest: "{{ app_path }}/prometheus.yml"
+  notify: 
+    - Restart prometheus
+
+- name: Copy grafana conf file
+  template:
+    src: grafana.ini
+    dest: "{{ app_path }}/grafana.ini"
+  notify: 
+    - Restart grafana
+
+- name: Copy grafana prometheus data source file
+  template:
+    src: datasources/prometheus.yaml
+    dest: "{{ app_path }}/datasources-prometheus.yaml"
+  notify: 
+    - Restart grafana
+
+- name: Run docker-compose file
+  community.docker.docker_compose:  
+    project_src: "{{ app_path }}/"
+    state: present

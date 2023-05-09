@@ -9,3 +9,5 @@
       tags: reverse-proxy
     - role: nitter
       tags: nitter
+    - role: observability
+      tags: observability

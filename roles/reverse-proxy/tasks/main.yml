@@ -11,14 +11,14 @@
 - name: Create app folder
   file:
     state: directory
-    path: "{{ apps_path }}/reverse-proxy"
+    path: "{{ app_path }}"
 
 - name: Copy docker-compose file
   template:
     src: docker-compose.yaml
-    dest: "{{ apps_path }}/reverse-proxy/docker-compose.yaml"
+    dest: "{{ app_path }}/docker-compose.yaml"
 
 - name: Run docker-compose file
   community.docker.docker_compose:
-    project_src: "{{ apps_path }}/reverse-proxy/"
+    project_src: "{{ app_path }}/"
     state: present

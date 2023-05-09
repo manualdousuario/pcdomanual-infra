@@ -1,0 +1,58 @@
+services:
+  prometheus:
+    image: prom/prometheus:v2.37.8
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/prometheus
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:9.5.1
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./datasources-prometheus.yaml:/etc/grafana/provisioning/datasources/prometheus.yaml
+    networks:
+      - {{ docker_external_network_name }}
+      - default
+    restart: unless-stopped
+    labels:
+      caddy: "grafana.{{ domain }}"
+      caddy.reverse_proxy: {% raw %} "{{upstreams 3000}}" {% endraw %}
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:v1.5.0
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.disable-defaults'
+      - '--collector.cpu'
+      - '--collector.loadavg'
+      - '--collector.filesystem'
+      - '--collector.diskstats'
+      - '--collector.time'
+      - '--collector.stat'
+      - '--collector.netdev'
+      - '--collector.os'
+      - '--collector.meminfo'
+      - '--collector.uname'
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+
+volumes:
+  grafana:
+  prometheus:
+
+networks:
+  {{ docker_external_network_name }}:
+    external: true
