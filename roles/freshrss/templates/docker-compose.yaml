@@ -1,0 +1,22 @@
+services:
+  freshrss:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - data:/var/www/FreshRSS/data
+    environment:
+      CRON_MIN: '*/20'
+    networks:
+      - {{ docker_external_network_name }}
+      - default
+    labels:
+      caddy: "freshrss.{{ domain }}"
+      caddy.reverse_proxy.header_up_0: "-User-Agent"
+      caddy.reverse_proxy: {% raw %} "{{upstreams 80}}" {% endraw %}
+
+volumes:
+  data:
+
+networks:
+  {{ docker_external_network_name }}:
+    external: true

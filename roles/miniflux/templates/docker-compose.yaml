@@ -1,0 +1,41 @@
+services:
+  miniflux:
+    image: miniflux/miniflux:2.0.44
+    environment:
+      DATABASE_URL: "host=db user={{ MINIFLUX_POSTGRES_USER }} password={{ MINIFLUX_POSTGRES_PASSWORD }} dbname={{ MINIFLUX_POSTGRES_DATABASE }} sslmode=disable"
+      ADMIN_USERNAME: {{ MINIFLUX_ADMIN_USERNAME }}
+      ADMIN_PASSWORD: {{ MINIFLUX_ADMIN_PASSWORD }}
+      RUN_MIGRATIONS: 1
+      CREATE_ADMIN: 1
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - {{ docker_external_network_name }}
+      - default
+    restart: unless-stopped
+    labels:
+      caddy: "miniflux.{{ domain }}"
+      caddy.reverse_proxy.header_up_0: "-User-Agent"
+      caddy.reverse_proxy: {% raw %} "{{upstreams 8080}}" {% endraw %}
+
+  db:
+    image: postgres:15.3
+    environment:
+      POSTGRES_USER: {{ MINIFLUX_POSTGRES_USER }}
+      POSTGRES_PASSWORD: {{ MINIFLUX_POSTGRES_PASSWORD }}
+      POSTGRES_DB: {{ MINIFLUX_POSTGRES_DATABASE }}
+    volumes:
+      - db:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "{{ MINIFLUX_POSTGRES_USER }}", "-d", "{{ MINIFLUX_POSTGRES_DATABASE }}"]
+      interval: 10s
+      start_period: 30s
+
+volumes:
+  db:
+
+networks:
+  {{ docker_external_network_name }}:
+    external: true

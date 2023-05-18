@@ -11,3 +11,7 @@
       tags: nitter
     - role: observability
       tags: observability
+    - role: miniflux
+      tags: miniflux
+    - role: freshrss
+      tags: freshrss
