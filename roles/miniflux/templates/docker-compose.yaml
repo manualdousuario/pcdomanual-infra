@@ -7,6 +7,7 @@ services:
       ADMIN_PASSWORD: {{ MINIFLUX_ADMIN_PASSWORD }}
       RUN_MIGRATIONS: 1
       CREATE_ADMIN: 1
+      BASE_URL: "https://miniflux.{{ domain }}"
     depends_on:
       db:
         condition: service_healthy
