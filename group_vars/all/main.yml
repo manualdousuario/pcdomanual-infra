@@ -1,5 +1,6 @@
 ansible_user: pcdomanual
 
 app_path: "/home/{{ ansible_user }}/apps/{{ role_path | basename }}"
+backup_path: "/home/{{ ansible_user }}/backups/{{ role_path | basename }}"
 
 docker_external_network_name: external

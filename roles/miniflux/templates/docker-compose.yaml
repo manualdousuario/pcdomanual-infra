@@ -34,6 +34,16 @@ services:
       interval: 10s
       start_period: 30s
 
+{% if MINIFLUX_BACKUP_ENABLED %}
+  gobackup:
+    image: huacnlee/gobackup:v2.2.0
+    entrypoint: /usr/local/bin/gobackup
+    command: run
+    volumes:
+      - "{{ backup_path }}:/host"
+      - "{{ app_path }}/gobackup.yaml:/etc/gobackup/gobackup.yaml"
+{% endif %}
+    
 volumes:
   db:
 

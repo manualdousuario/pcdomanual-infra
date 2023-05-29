@@ -1,0 +1,28 @@
+models:
+  miniflux:
+    schedule:
+      cron: "0 22 * * *"
+    encrypt_with:
+      type: openssl
+      password: {{ MINIFLUX_BACKUP_PASSWORD }}
+    compress_with:
+      type: tgz
+    storages:
+      local:
+        type: local
+        path: /host
+        keep: 10
+    databases:
+      postgresql:
+        type: postgresql
+        host: db
+        username: {{ MINIFLUX_POSTGRES_USER }}
+        password:  {{ MINIFLUX_POSTGRES_PASSWORD }}
+        database: {{ MINIFLUX_POSTGRES_DATABASE }}
+{% if MINIFLUX_BACKUP_NOTIFICATION_ENABLED %}
+    notifiers:
+      telegram:
+        type: telegram
+        token: "{{ TELEGRAM_BACKUP_TOKEN }}"
+        chat_id: "{{ TELEGRAM_BACKUP_CHANNEL }}"
+{% endif %}

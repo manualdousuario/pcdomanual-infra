@@ -1,0 +1,7 @@
+---
+- name: Restart gobackup
+  community.docker.docker_compose:  
+    project_src: "{{ app_path }}"
+    services: gobackup
+    state: present
+    restarted: yes

@@ -4,10 +4,22 @@
     state: directory
     path: "{{ app_path }}"
 
+- name: Create backup folder
+  file:
+    state: directory
+    path: "{{ backup_path }}"
+
 - name: Copy docker-compose file
   template:
     src: docker-compose.yaml
     dest: "{{ app_path }}/docker-compose.yaml"
+
+- name: Copy gobackup file
+  template:
+    src: gobackup.yaml
+    dest: "{{ app_path }}/gobackup.yaml"
+  notify: 
+    - Restart gobackup
 
 - name: Run docker-compose file
   community.docker.docker_compose:  
