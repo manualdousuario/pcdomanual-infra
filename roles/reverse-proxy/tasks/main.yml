@@ -13,6 +13,12 @@
     state: directory
     path: "{{ app_path }}"
 
+- name: Clone pcdomanual site
+  ansible.builtin.git:
+    repo: 'https://codeberg.org/manualdousuario/site.git'
+    dest: "{{ app_path }}/site"
+    version: "12c1d41bbf8f7c8d8f1f6494f0e3afb393370867"
+
 - name: Copy docker-compose file
   template:
     src: docker-compose.yaml

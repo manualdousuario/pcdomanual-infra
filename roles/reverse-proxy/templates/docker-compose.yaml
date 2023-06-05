@@ -11,7 +11,13 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - caddy_data:/data
+      - "{{ app_path }}/site/public:/site"
     restart: unless-stopped
+    labels:
+      # hosts the main website
+      caddy: "{{ domain }}"
+      caddy.root: "* /site"
+      caddy.file_server:
 
 networks:
   {{ docker_external_network_name }}:
