@@ -8,6 +8,9 @@ services:
       RUN_MIGRATIONS: 1
       CREATE_ADMIN: 1
       BASE_URL: "https://miniflux.{{ domain }}"
+      WORKER_POOL_SIZE: 10
+      POLLING_FREQUENCY: 20
+      BATCH_SIZE: 500
     depends_on:
       db:
         condition: service_healthy
