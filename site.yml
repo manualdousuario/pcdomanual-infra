@@ -13,3 +13,5 @@
       tags: observability
     - role: miniflux
       tags: miniflux
+    - role: libreddit
+      tags: libreddit
