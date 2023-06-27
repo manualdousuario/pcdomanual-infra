@@ -17,7 +17,7 @@
   ansible.builtin.git:
     repo: 'https://codeberg.org/manualdousuario/site.git'
     dest: "{{ app_path }}/site"
-    version: "eb0d549abe805dcaf60973be4630634442b24379"
+    version: "966ea81815aeb4748066420f5760cc5faeef6ad3"
 
 - name: Copy docker-compose file
   template:
