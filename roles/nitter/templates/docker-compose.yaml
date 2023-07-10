@@ -1,6 +1,6 @@
 services:
   nitter:
-    image: zedeus/nitter:2254a0728c587ebcec51ff08da0bf145606a629e
+    image: zedeus/nitter:0bc3c153d9b38a3c02f321fb64a375fef6b97e8e
     volumes:
       - ./nitter.conf:/src/nitter.conf:ro
     depends_on:
