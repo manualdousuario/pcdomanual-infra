@@ -1,13 +1,13 @@
 services:
   prometheus:
-    image: prom/prometheus:v2.37.8
+    image: prom/prometheus:v2.45.0
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus:/prometheus
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:9.5.1
+    image: grafana/grafana:10.0.2
     volumes:
       - grafana:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini
@@ -21,7 +21,7 @@ services:
       caddy.reverse_proxy: {% raw %} "{{upstreams 3000}}" {% endraw %}
 
   node_exporter:
-    image: quay.io/prometheus/node-exporter:v1.5.0
+    image: quay.io/prometheus/node-exporter:v1.6.1
     command:
       - '--path.rootfs=/host'
       - '--collector.disable-defaults'
@@ -40,7 +40,7 @@ services:
       - '/:/host:ro,rslave'
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
     restart: unless-stopped
     command:
       - -docker_only=true
