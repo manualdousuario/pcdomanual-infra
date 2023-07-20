@@ -15,3 +15,5 @@
       tags: miniflux
     - role: libreddit
       tags: libreddit
+    - role: linkding
+      tags: linkding

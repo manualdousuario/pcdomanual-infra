@@ -1,0 +1,51 @@
+services:
+  linkding:
+    image: sissbruecker/linkding:1.19.0
+    environment:
+      LD_DB_ENGINE: postgres
+      LD_DB_DATABASE: {{ LINKDING_POSTGRES_DATABASE }}
+      LD_DB_USER: {{ LINKDING_POSTGRES_USER }}
+      LD_DB_PASSWORD: {{ LINKDING_POSTGRES_PASSWORD }}
+      LD_DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - {{ docker_external_network_name }}
+      - default
+    restart: unless-stopped
+    labels:
+      caddy: "linkding.{{ domain }}"
+      caddy.reverse_proxy.header_up_0: "-User-Agent"
+      caddy.reverse_proxy: {% raw %} "{{upstreams 9090}}" {% endraw %}
+
+  db:
+    image: postgres:15.3
+    environment:
+      POSTGRES_USER: {{ LINKDING_POSTGRES_USER }}
+      POSTGRES_PASSWORD: {{ LINKDING_POSTGRES_PASSWORD }}
+      POSTGRES_DB: {{ LINKDING_POSTGRES_DATABASE }}
+    volumes:
+      - db:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "{{ LINKDING_POSTGRES_USER }}", "-d", "{{ LINKDING_POSTGRES_DATABASE }}"]
+      interval: 10s
+      start_period: 30s
+
+{% if LINKDING_BACKUP_ENABLED %}
+  gobackup:
+    image: huacnlee/gobackup:v2.2.0
+    entrypoint: /usr/local/bin/gobackup
+    command: run
+    volumes:
+      - "{{ backup_path }}:/host"
+      - "{{ app_path }}/gobackup.yaml:/etc/gobackup/gobackup.yaml"
+{% endif %}
+    
+volumes:
+  db:
+
+networks:
+  {{ docker_external_network_name }}:
+    external: true
