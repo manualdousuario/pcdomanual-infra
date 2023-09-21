@@ -10,6 +10,17 @@
     state: present
     update_cache: yes
 
+- name: Install hugo
+  become: yes
+  ansible.builtin.unarchive:
+    src: https://github.com/gohugoio/hugo/releases/download/v0.118.2/hugo_0.118.2_linux-amd64.tar.gz
+    dest: /usr/local/bin
+    include: hugo
+    remote_src: yes
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: u+x,g+x
+
 - name: Install Python Docker dependencies
   pip:
     name:

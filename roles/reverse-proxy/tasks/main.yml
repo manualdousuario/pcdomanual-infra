@@ -14,10 +14,15 @@
     path: "{{ app_path }}"
 
 - name: Clone pcdomanual site
-  ansible.builtin.git:
-    repo: 'https://codeberg.org/manualdousuario/site.git'
-    dest: "{{ app_path }}/site"
-    version: "cd8ec45a9b5d4b533e271d54eb57c4301adf0502"
+  ansible.builtin.command: "git clone https://codeberg.org/manualdousuario/site.git {{ app_path }}/site"
+  args:
+    creates: "{{ app_path }}/site/.git"
+
+- name: Automatically clone, pull and build pcdomanual site every hour
+  ansible.builtin.cron:
+    name: pull pcdomanual site
+    special_time: hourly
+    job: "git -C {{ app_path }}/site pull && hugo -s {{ app_path }}/site"
 
 - name: Copy docker-compose file
   template:
