@@ -32,7 +32,7 @@ $ ansible-playbook -i hosts --limit production site.yml
 
 Pode-se também usar `tags` para executar somente uma parte da configuração:
 ```
-$ ansible-playbook -i hosts --limit production site.yml --tags nitter
+$ ansible-playbook -i hosts --limit production site.yml --tags miniflux
 ```
 
 ## Ansible Vault
@@ -70,7 +70,7 @@ Para acessar um serviço, adiciona uma linha no seu arquivo `/etc/hosts` apontan
 ```
 $ cat /etc/hosts
 
-182.168.56.10 nitter.pcdomanual.local
+182.168.56.10 miniflux.pcdomanual.local
 ```
 
-Ao acessar `nitter.pcdomanual.local` no seu navegador, você receberá um alerta de certificado inválido. Você pode ignorar o alerta e prosseguir, já que se trata de uma versão local para testes.
+Ao acessar `miniflux.pcdomanual.local` no seu navegador, você receberá um alerta de certificado inválido. Você pode ignorar o alerta e prosseguir, já que se trata de uma versão local para testes.
