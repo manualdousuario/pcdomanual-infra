@@ -1,6 +1,6 @@
 services:
   linkding:
-    image: sissbruecker/linkding:1.19.0
+    image: sissbruecker/linkding:1.21.1
     environment:
       LD_DB_ENGINE: postgres
       LD_DB_DATABASE: {{ LINKDING_POSTGRES_DATABASE }}
