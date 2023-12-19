@@ -14,7 +14,7 @@
     path: "{{ app_path }}"
 
 - name: Clone pcdomanual site
-  ansible.builtin.command: "git clone https://codeberg.org/manualdousuario/site.git {{ app_path }}/site"
+  ansible.builtin.command: "git clone https://github.com/manualdousuario/pcdomanual-site.git {{ app_path }}/site"
   args:
     creates: "{{ app_path }}/site/.git"
 

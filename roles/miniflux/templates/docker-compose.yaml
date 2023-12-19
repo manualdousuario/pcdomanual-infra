@@ -1,6 +1,6 @@
 services:
   miniflux:
-    image: miniflux/miniflux:2.0.48
+    image: miniflux/miniflux:2.0.51
     environment:
       DATABASE_URL: "host=db user={{ MINIFLUX_POSTGRES_USER }} password={{ MINIFLUX_POSTGRES_PASSWORD }} dbname={{ MINIFLUX_POSTGRES_DATABASE }} sslmode=disable"
       ADMIN_USERNAME: {{ MINIFLUX_ADMIN_USERNAME }}

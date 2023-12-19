@@ -1,6 +1,6 @@
 services:
   caddy:
-    image: lucaslorentz/caddy-docker-proxy:2.8.4
+    image: lucaslorentz/caddy-docker-proxy:2.8.10
     ports:
       - 80:80
       - 443:443
