@@ -1,0 +1,15 @@
+---
+- name: Create app folder
+  file:
+    state: directory
+    path: "{{ app_path }}"
+
+- name: Copy docker-compose file
+  template:
+    src: docker-compose.yaml
+    dest: "{{ app_path }}/docker-compose.yaml"
+
+- name: Run docker-compose file
+  community.docker.docker_compose:  
+    project_src: "{{ app_path }}/"
+    state: present
