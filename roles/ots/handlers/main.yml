@@ -1,0 +1,7 @@
+---
+- name: Restart ots
+  community.docker.docker_compose:  
+    project_src: "{{ app_path }}"
+    services: ots
+    state: present
+    restarted: yes

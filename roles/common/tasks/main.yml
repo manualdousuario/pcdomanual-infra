@@ -24,7 +24,7 @@
 - name: Install Python Docker dependencies
   pip:
     name:
-      - docker
+      - docker==6.1.3
       - docker-compose
 
 - name: Add {{ ansible_user }} user to docker group

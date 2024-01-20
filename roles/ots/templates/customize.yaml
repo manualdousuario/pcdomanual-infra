@@ -1,0 +1,3 @@
+# Override the app-title, if unset or empty the default app-title
+# "OTS - One Time Secrets" will be used
+appTitle: 'OTS – Compartilhamento de Segredos'

@@ -2,15 +2,18 @@ services:
   miniflux:
     image: miniflux/miniflux:2.0.51
     environment:
-      DATABASE_URL: "host=db user={{ MINIFLUX_POSTGRES_USER }} password={{ MINIFLUX_POSTGRES_PASSWORD }} dbname={{ MINIFLUX_POSTGRES_DATABASE }} sslmode=disable"
       ADMIN_USERNAME: {{ MINIFLUX_ADMIN_USERNAME }}
       ADMIN_PASSWORD: {{ MINIFLUX_ADMIN_PASSWORD }}
-      RUN_MIGRATIONS: 1
-      CREATE_ADMIN: 1
       BASE_URL: "https://miniflux.{{ domain }}"
-      WORKER_POOL_SIZE: 10
-      POLLING_FREQUENCY: 20
       BATCH_SIZE: 500
+      DATABASE_URL: "host=db user={{ MINIFLUX_POSTGRES_USER }} password={{ MINIFLUX_POSTGRES_PASSWORD }} dbname={{ MINIFLUX_POSTGRES_DATABASE }} sslmode=disable"
+      CLEANUP_ARCHIVE_UNREAD_DAYS: 60
+      CLEANUP_ARCHIVE_READ_DAYS: 30
+      CREATE_ADMIN: 1
+      POLLING_FREQUENCY: 20
+      POLLING_SCHEDULER: entry_frequency
+      RUN_MIGRATIONS: 1
+      WORKER_POOL_SIZE: 10
     depends_on:
       db:
         condition: service_healthy
